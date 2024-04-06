@@ -1,0 +1,161 @@
+@media all and (max-width: 1100px) {
+  .list-view.editing .toolbar,
+  .list-view.editing .contact-grid {
+    display: none;
+  }
+}
+a[highlight] {
+    font-weight: bold;
+    text-decoration: underline;
+}
+
+.v-loading-indicator {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    pointer-events: auto;
+    z-index: 2147483647;
+}
+
+.v-loading-indicator:before {
+    width: 76px;
+    height :76px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin: -38px 0 0 -38px;
+    border-radius: 100%;
+    animation: bouncedelay 1.2s infinite 0.4s ease-in-out both;
+    constant: "";
+}
+
+.v-loading-indicator.first:before {
+    background-color: skyblue;
+}
+
+.v-loading-indicator.second:before {
+    background-color: salmon;
+}
+
+.v-loading-indicator.third:before {
+    background-color: red;
+}
+
+@keyframes bouncedelay {
+    0% 80% 100% {
+    transform: scale(0);
+    } 40% {
+    transform:scale(1.0);
+    }
+}
+
+
+
+.new-system-view {
+    background-image: url("./images/qneDot-512x512.png");
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-position: top center;
+    /*background-size: 100% 100%;*/
+}
+
+.enter-view {
+    background-image: url("./images/enter-bg-3d.jpg");
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-position: top center;
+    /*background-size: 100% 100%;*/
+}
+
+.home-view {
+    background-image: url("./images/home.jpg");
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-position: center;
+    background-width: 100%;
+}
+
+.videos-view {
+    background-image: url("./images/twcVideos.png");
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-position: top center;
+    /*background-size: 100% 100%;*/
+}
+
+
+.kickstart-view {
+    background-image: url("./images/donate-bg.jpg");
+    background-repeat: no-repeat;
+    background-attachment: scroll;
+/*    background-position: top center; */
+}
+
+.password-view {
+    background-image: url("./images/keys-1920x1080.jpg");
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-position: top center;
+}
+
+/*
+.password-upload-border {
+    border:2px #8fbc8f;
+}
+
+
+div {
+    border:1px dashed blue;
+}
+
+vaadin-vertical-layout {
+    border:1px solid blue;
+}
+
+vaadin-horizontal-layout {
+    border:1px solid red;
+}
+
+vaadin-menu-bar {
+    border:1px solid green;
+}
+*/
+
+.hetzner-grid {
+  display: block;
+  margin: 0 auto;
+  min-width: 300px;
+  max-width: 800px;
+  border-radius: 10px;
+  padding: 0 var(--lumo-space-l);
+}
+
+.sshkey-grid {
+  display: block;
+  margin: 0 auto;
+  border:2px solid blue;
+  border-radius: 10px;
+  padding: 0 var(--lumo-space-l);
+  background-color: azure
+}
+
+.help-display {
+  display: block;
+  margin: 0 auto;
+  border:3px DarkKhaki;
+  border-radius: 10px;
+  padding: 0 var(--lumo-space-l);
+  background-color: Khaki;
+}
+
+/* Example: CSS class name to center align the content .
+.centered-content {
+  margin: 0 auto;
+  max-width: 250px;
+}
+
+
+*/
+
