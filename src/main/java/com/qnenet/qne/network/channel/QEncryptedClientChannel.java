@@ -15,7 +15,7 @@ import com.southernstorm.noise.protocol.HandshakeState;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class QClientChannelImpl implements QClientChannel {
+public class QEncryptedClientChannel extends QChannel {
 
     private static final long CHANNEL_MSG_TIMEOUT_1 = 2000;
     private static final long CHANNEL_MSG_TIMEOUT_2 = 4000;
@@ -28,7 +28,7 @@ public class QClientChannelImpl implements QClientChannel {
     private byte[] firstPayload;
     private InetSocketAddress destination;
 
-    public QClientChannelImpl(InetSocketAddress destination, byte[] firstPayload, byte[] privateKeyClone,
+    public QEncryptedClientChannel(InetSocketAddress destination, byte[] firstPayload, byte[] privateKeyClone,
             byte[] publicKeyClone) {
         this.destination = destination;
         this.firstPayload = firstPayload;
@@ -101,5 +101,11 @@ public class QClientChannelImpl implements QClientChannel {
         // // Send the packet
         // sendPacket(packet);
         // }
+    }
+
+    @Override
+    public void handlePacketBB(ByteBuffer bb, InetSocketAddress srcInetAddr) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'handlePacketBB'");
     }
 }

@@ -22,6 +22,7 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.Inet4Address;
+import java.net.InetSocketAddress;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.Instant;
@@ -111,7 +112,8 @@ public class QNEObjects {
         kryo.register(QInetSocketAddr.class, 43);
         kryo.register(QSegmentItem.class, 44);
         kryo.register(QNetworkStructure.class, 45);
-        lastClassId = 45; // must be set and updated after new addition
+        kryo.register(QPayload.class, 46);
+        lastClassId = 46; // must be set and updated after new addition
         return kryo;
     }
 
