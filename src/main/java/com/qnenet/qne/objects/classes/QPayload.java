@@ -23,9 +23,20 @@ public class QPayload {
 	public static final byte ENCRYPTED_JSON = 5;
 	public static final byte PLAIN_OBJECT = 6;
 	public static final byte ENCRYPTED_OBJECT = 7;
-	
-	public byte type;
+	public static final byte HANDSHAKE = 0;
+
+
+    public byte type;
 	public byte[] bytes;
+
+	public QPayload() {
+    }
+
+	
+	public QPayload(byte type, byte[] bytes) {
+		this.type = type;
+		this.bytes = bytes;
+	}
 
 
 }

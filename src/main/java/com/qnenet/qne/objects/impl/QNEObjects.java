@@ -21,8 +21,6 @@ import org.springframework.stereotype.Service;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.Inet4Address;
-import java.net.InetSocketAddress;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.Instant;
@@ -98,7 +96,7 @@ public class QNEObjects {
         kryo.register(QStoreObjectKey.class, 29);
         kryo.register(QStoreObject.class, 30);
         kryo.register(QEPAddrPair.class, 31);
-        kryo.register(QNoiseKeypair.class, 32);
+        kryo.register(QPayload.class, 32);
         kryo.register(QEndPointProps.class, 33);
         kryo.register(QEndPointRestartInfo.class, 34);
         kryo.register(QChannelInfo.class, 35);
@@ -112,8 +110,7 @@ public class QNEObjects {
         kryo.register(QInetSocketAddr.class, 43);
         kryo.register(QSegmentItem.class, 44);
         kryo.register(QNetworkStructure.class, 45);
-        kryo.register(QPayload.class, 46);
-        lastClassId = 46; // must be set and updated after new addition
+        lastClassId = 45; // must be set and updated after new addition
         return kryo;
     }
 

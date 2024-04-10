@@ -1,11 +1,8 @@
 package com.qnenet.qne.objects.classes;
 
-import com.qnenet.qne.network.packet.QClientChannel;
-import com.qnenet.qne.network.packet.QPacket;
-import com.qnenet.qne.network.packet.QServerChannel;
+import com.qnenet.qne.network.channel.QClientChannel;
+import com.qnenet.qne.network.channel.QServerChannel;
 import com.qnenet.qne.system.constants.QSysConstants;
-
-import java.util.ArrayList;
 
 public class QNetMsgNewCertificate extends QNetMsg {
 
@@ -16,7 +13,7 @@ public class QNetMsgNewCertificate extends QNetMsg {
     public byte[] sslPublicKeyEncoded;
 
     @Override
-    public void handleRequest(QServerChannel serverChannel, QPacket qPacket) {
+    public void handleRequest(QServerChannel serverChannel, QNEPacket qPacket) {
         if (this instanceof QNetMsgNewCertificate) {
 
 //            strings.add("Timestamp -> " + Long.valueOf(System.currentTimeMillis()));
@@ -28,7 +25,7 @@ public class QNetMsgNewCertificate extends QNetMsg {
     }
 
     @Override
-    public void handleResponse(QClientChannel clientChannel, QPacket qPacket) {
+    public void handleResponse(QClientChannel clientChannel, QNEPacket qPacket) {
 
     }
 }

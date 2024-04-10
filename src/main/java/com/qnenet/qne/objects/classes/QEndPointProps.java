@@ -26,7 +26,7 @@ public class QEndPointProps {
     public char[] bigPassword;
     public char[] littlePassword;
 
-    public QNoiseKeypair noiseKeypair;
+    // public QNoiseKeypair noiseKeypair;
 
     public String endPointDirectory;
     public String endPointStoreDirectory;

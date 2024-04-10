@@ -13,7 +13,6 @@
 
 package com.qnenet.qne.system.utils;
 
-import com.qnenet.qne.objects.classes.QNoiseKeypair;
 import com.southernstorm.noise.protocol.DHState;
 import com.southernstorm.noise.protocol.Noise;
 import org.bouncycastle.openssl.jcajce.JcaPEMWriter;
@@ -256,7 +255,7 @@ public class QSecurityUtils { // implements QSecurityUtils {
         return writer.toString();
     }
 
-    public static QNoiseKeypair createNoiseKeypair() {
+    public static byte[] createNoiseKeypair() {
         DHState dh = null;
         try {
             dh = Noise.createDH("25519");
@@ -268,11 +267,10 @@ public class QSecurityUtils { // implements QSecurityUtils {
         dh.getPrivateKey(privateKeyBytes, 0);
         byte[] publicKeyBytes = new byte[32];
         dh.getPublicKey(publicKeyBytes, 0);
-
-        QNoiseKeypair noiseKeypair = new QNoiseKeypair();
-        noiseKeypair.privateKeyBytes = privateKeyBytes;
-        noiseKeypair.publicKeyBytes = publicKeyBytes;
-        return noiseKeypair;
+        byte[] result = new byte[64]; 
+        System.arraycopy(privateKeyBytes, 0, result, 0, 32);      
+        System.arraycopy(publicKeyBytes, 0, result, 32, 32);      
+        return result;
     }
 
 

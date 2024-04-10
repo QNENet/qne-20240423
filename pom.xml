@@ -189,6 +189,12 @@
 			<artifactId>hetznercloud-api</artifactId>
 			<version>3.2.4</version>
 		</dependency>
+		<dependency>
+			<groupId>org.vaadin.addons.tatu</groupId>
+			<artifactId>webcam-flow</artifactId>
+			<version>1.0.0</version>
+		 </dependency>
+		 
 
 	</dependencies>
 

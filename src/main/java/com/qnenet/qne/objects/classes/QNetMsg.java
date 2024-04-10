@@ -13,40 +13,24 @@ package com.qnenet.qne.objects.classes;
  * limitations under the License.
  */
 
-//import com.qnenet.qne.channel.QChannel;
-//import com.qnenet.qne.packet.QClientChannel;
-//import com.qnenet.qne.packet.QPacket;
-//import com.qnenet.qne.packet.QServerChannel;
-
-import com.qnenet.qne.network.packet.QClientChannel;
-import com.qnenet.qne.network.packet.QPacket;
-import com.qnenet.qne.network.packet.QServerChannel;
 
 import java.util.Map;
 
+import com.qnenet.qne.network.channel.QClientChannel;
+import com.qnenet.qne.network.channel.QServerChannel;
+
 public abstract class QNetMsg {
 
-//    public int channelId;
-//    public int roundTripId;
-//    public int initiatorEndpointIdx;
-//    public int responderEndpointIdx;
-//    public int role;
-//    public byte[] netMsgBytes;
-
     public int status;
+    @SuppressWarnings("rawtypes")
     public Map map;
-//    public boolean keepAlive;
-//    public byte retryCount;
-
-//    public transient QEPId senderEPId;
-//
-//    public QEndPointInfo senderEndPointInfo;
 
 
-    public abstract void handleRequest(QServerChannel serverChannel, QPacket qPacket);
+    public abstract void handleRequest(QServerChannel serverChannel, QNEPacket qPacket);
 
-    public abstract void handleResponse(QClientChannel clientChannel, QPacket qPacket);
+    public abstract void handleResponse(QClientChannel clientChannel, QNEPacket qPacket);
 
+    @SuppressWarnings("unchecked")
     public Map<Object, Object> getMap() {
         return map;
     }
@@ -59,10 +43,4 @@ public abstract class QNetMsg {
         this.status = status;
     }
 
-//    public transient QPacketOwner origin;
-//    public transient QChannel channel;
-
-//    public QEndPointInfo getSenderEndPointAddress() {
-//        return senderEndPointInfo;
-//    }
 }

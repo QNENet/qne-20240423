@@ -3,7 +3,7 @@ package com.qnenet.qne.system.impl;
 import com.qnenet.qne.cacertificates.QInterCertificate;
 import com.qnenet.qne.cacertificates.QRootCertificate;
 import com.qnenet.qne.discovery.QDiscoveryServer;
-import com.qnenet.qne.network.endpoint.QEndPoint;
+// import com.qnenet.qne.network.endpoint.QEndPoint;
 import com.qnenet.qne.network.known.QKnown;
 import com.qnenet.qne.objects.classes.*;
 import com.qnenet.qne.objects.impl.QNEObjects;
@@ -48,8 +48,8 @@ import java.util.concurrent.Executors;
 @Service
 public class QSystem {
 
-    @Autowired
-    private ObjectFactory<QEndPoint> endPointFactory;
+    // @Autowired
+    // private ObjectFactory<QEndPoint> endPointFactory;
 
     @Autowired
     private ObjectFactory<QRootCertificate> rootCertificateFactory;
@@ -102,9 +102,9 @@ public class QSystem {
     // private boolean uPnPListenerIsRunning;
     // private DatagramSocket uPnPSocket;
 
-    private ArrayList<QEndPointRestartInfo> endPointsRestartInfo;
-    private ConcurrentHashMap<Integer, QEndPoint> endPointsByIdxMap = new ConcurrentHashMap<>();
-    private Path endPointRestartInfoListFilePath;
+    // private ArrayList<QEndPointRestartInfo> endPointsRestartInfo;
+    // private ConcurrentHashMap<Integer, QEndPoint> endPointsByIdxMap = new ConcurrentHashMap<>();
+    // private Path endPointRestartInfoListFilePath;
 
     @SuppressWarnings("unused")
     private boolean isNewSystem;
@@ -145,7 +145,7 @@ public class QSystem {
 //            }
 //        }
 
-        endPointRestartInfoListFilePath = Paths.get(qnePaths.getSystemPath().toString(), "endPointsRestartInfo.list");
+        // endPointRestartInfoListFilePath = Paths.get(qnePaths.getSystemPath().toString(), "endPointsRestartInfo.list");
 
         if (QFileUtils.checkDirectory(qnePaths.getEndPointsPath())) {
             isNewSystem = true;
@@ -239,8 +239,8 @@ public class QSystem {
 
 //        startServers();
 
-        endPointsRestartInfo = new ArrayList<>();
-        saveEndPointsRestartInfo();
+        // endPointsRestartInfo = new ArrayList<>();
+        // saveEndPointsRestartInfo();
 
 
         boolean deleteInstallerSystemProps = Boolean.parseBoolean(env.getProperty("qne.delete.installer.system.props"));
@@ -254,8 +254,8 @@ public class QSystem {
 
         // usersManager.init(this);
 
-        @SuppressWarnings("unused")
-        QEndPoint endPoint = addEndPoint(QSysConstants.ENDPOINT_TYPE_FIRST);
+        // @SuppressWarnings("unused")
+        // QEndPoint endPoint = addEndPoint(QSysConstants.ENDPOINT_TYPE_FIRST);
 
     }
 
@@ -300,8 +300,8 @@ public class QSystem {
 
         // usersManager.init(this);
 
-        loadEndPointsRestartInfo();
-        openEndPoints();
+        // loadEndPointsRestartInfo();
+        // openEndPoints();
 
 //        startServers();
 
@@ -345,15 +345,15 @@ public class QSystem {
         return statusList;
     }
 
-    public byte[] getNoisePrivateKeyClone() {
-        QNoiseKeypair noiseKeypair = (QNoiseKeypair) sysPropsMap.get(QSysConstants.NOISE_KEY_PAIR);
-        return noiseKeypair.privateKeyBytes;
-    }
+    // public byte[] getNoisePrivateKeyClone() {
+    //     QNoiseKeypair noiseKeypair = sysPropsMap.get(QSysConstants.NOISE_KEY_PAIR);
+    //     return noiseKeypair.privateKeyBytes;
+    // }
 
-    public byte[] getNoisePublicKeyClone() {
-        QNoiseKeypair noiseKeypair = (QNoiseKeypair) sysPropsMap.get(QSysConstants.NOISE_KEY_PAIR);
-        return noiseKeypair.publicKeyBytes;
-    }
+    // public byte[] getNoisePublicKeyClone() {
+    //     QNoiseKeypair noiseKeypair = (QNoiseKeypair) sysPropsMap.get(QSysConstants.NOISE_KEY_PAIR);
+    //     return noiseKeypair.publicKeyBytes;
+    // }
 
     public KeyStore getKeystore() {
         return keyStore;
@@ -380,109 +380,109 @@ public class QSystem {
 /////////// End Points ////////////////////////////////////////////////////////////////////////////
 /////////// End Points ////////////////////////////////////////////////////////////////////////////
 
-    private QEndPoint addEndPoint(int endpointTypeFirst) {
-        return addEndPoint(endpointTypeFirst, null);
-    }
+//     private QEndPoint addEndPoint(int endpointTypeFirst) {
+//         return addEndPoint(endpointTypeFirst, null);
+//     }
 
 
-    public QEndPoint addEndPoint(int endPointType, String emailAddress) {
+//     public QEndPoint addEndPoint(int endPointType, String emailAddress) {
 
-        QThreadUtils.showThreadName("EndPoint Manager Add EndPoint");
+//         QThreadUtils.showThreadName("EndPoint Manager Add EndPoint");
 
-        QEndPoint endPoint = endPointFactory.getObject();
+//         QEndPoint endPoint = endPointFactory.getObject();
 
-        Path endPointsPath = qnePaths.getEndPointsPath();
+//         Path endPointsPath = qnePaths.getEndPointsPath();
 
-        QEndPointProps endPointProps = new QEndPointProps();
+//         QEndPointProps endPointProps = new QEndPointProps();
 
-        endPointProps.endPointName = "0-" + QRandomUtils.generateRandomName(4);
+//         endPointProps.endPointName = "0-" + QRandomUtils.generateRandomName(4);
 
-        endPointProps.endPointType = endPointType;
-        endPointProps.mainEmail = emailAddress;
+//         endPointProps.endPointType = endPointType;
+//         endPointProps.mainEmail = emailAddress;
 
-        endPointProps.createdDateTime = LocalDateTime.now();
+//         endPointProps.createdDateTime = LocalDateTime.now();
 
-        endPointProps.bigPassword = QSecurityUtils.generatePasswordChars(16);
-        endPointProps.littlePassword = QSecurityUtils.generateLittlePassword(4);
+//         endPointProps.bigPassword = QSecurityUtils.generatePasswordChars(16);
+//         endPointProps.littlePassword = QSecurityUtils.generateLittlePassword(4);
 
-        endPointProps.noiseKeypair = QSecurityUtils.createNoiseKeypair();
+//         // endPointProps.noiseKeypair = QSecurityUtils.createNoiseKeypair();
 
-        endPointProps.endPointDirectory = Paths.get(
-                endPointsPath.toString(), QStringUtils.int4(endPointProps.endPointIdx)).toString();
+//         endPointProps.endPointDirectory = Paths.get(
+//                 endPointsPath.toString(), QStringUtils.int4(endPointProps.endPointIdx)).toString();
 
-        endPointProps.endPointStoreDirectory = Paths.get(
-                endPointProps.endPointDirectory, "store").toString();
+//         endPointProps.endPointStoreDirectory = Paths.get(
+//                 endPointProps.endPointDirectory, "store").toString();
 
-        Path endPointPropsFilePath = Paths.get(endPointProps.endPointDirectory, "endpoint.props");
+//         Path endPointPropsFilePath = Paths.get(endPointProps.endPointDirectory, "endpoint.props");
 
-        endPointProps.endPointInfoFilePathStr = endPointPropsFilePath.toString();
+//         endPointProps.endPointInfoFilePathStr = endPointPropsFilePath.toString();
 
-// transient
-        endPointProps.endPointPath = Paths.get(endPointProps.endPointDirectory);
-        endPointProps.endPointStorePath = Paths.get(endPointProps.endPointStoreDirectory);
+// // transient
+//         endPointProps.endPointPath = Paths.get(endPointProps.endPointDirectory);
+//         endPointProps.endPointStorePath = Paths.get(endPointProps.endPointStoreDirectory);
 
-        endPointProps.littleEncryptor = new AES256BinaryEncryptor();
-        endPointProps.bigEncryptor = new AES256BinaryEncryptor();
+//         endPointProps.littleEncryptor = new AES256BinaryEncryptor();
+//         endPointProps.bigEncryptor = new AES256BinaryEncryptor();
 
-        endPointProps.littleEncryptor.setPasswordCharArray(endPointProps.littlePassword);
-        endPointProps.bigEncryptor.setPasswordCharArray(endPointProps.bigPassword);
+//         endPointProps.littleEncryptor.setPasswordCharArray(endPointProps.littlePassword);
+//         endPointProps.bigEncryptor.setPasswordCharArray(endPointProps.bigPassword);
 
-        QEPAddrPair epAddrPair = new QEPAddrPair();
-        epAddrPair.setEpId(new QEPId(QRandomUtils.randomLongBetween(100000L, 999999L)));
-        epAddrPair.setEPIdx((short) QFileUtils.filesInDirCount(endPointsPath));
-        endPointProps.epAddrPair = epAddrPair;
+//         QEPAddrPair epAddrPair = new QEPAddrPair();
+//         epAddrPair.setEpId(new QEPId(QRandomUtils.randomLongBetween(100000L, 999999L)));
+//         epAddrPair.setEPIdx((short) QFileUtils.filesInDirCount(endPointsPath));
+//         endPointProps.epAddrPair = epAddrPair;
 
-        endPointProps.publicKeyBytes = endPointProps.noiseKeypair.publicKeyBytes;
+//         // endPointProps.publicKeyBytes = endPointProps.noiseKeypair.publicKeyBytes;
 
-        endPoint.initNew(this, endPointProps);
+//         endPoint.initNew(this, endPointProps);
 
-        return endPoint;
-    }
-
-
-    public void registerNewEndPoint(QEndPointRestartInfo restartInfo) {
-        endPointsRestartInfo.add(restartInfo);
-        saveEndPointsRestartInfo();
-    }
-
-    private void saveEndPointsRestartInfo() {
-        qobjs.saveObjToEncFile(endPointRestartInfoListFilePath, endPointsRestartInfo, bigEncryptor);
-    }
-
-    @SuppressWarnings("unchecked")
-    private void loadEndPointsRestartInfo() {
-        endPointsRestartInfo = (ArrayList<QEndPointRestartInfo>) qobjs.loadObjFromEncFile(endPointRestartInfoListFilePath, bigEncryptor);
-    }
-
-    public QEndPoint getEndPointByIdx(int endPointIdx) {
-        return endPointsByIdxMap.get(endPointIdx);
-    }
-
-    public void registerEndPointByIdx(QEndPoint endPoint) {
-        endPointsByIdxMap.put(endPoint.getEndPointIdx(), endPoint);
-    }
-
-    public void clearEndPointsList() {
-        endPointsByIdxMap.clear();
-    }
-
-    public QEndPoint getEndPoint(int endPointIdx) {
-        QEndPoint endPoint = endPointsByIdxMap.get(endPointIdx);
-        return endPoint;
-    }
+//         return endPoint;
+//     }
 
 
-    private void openEndPoints() {
+//     public void registerNewEndPoint(QEndPointRestartInfo restartInfo) {
+//         endPointsRestartInfo.add(restartInfo);
+//         saveEndPointsRestartInfo();
+//     }
 
-        for (int i = 0; i < endPointsRestartInfo.size(); i++) {
-            QEndPointRestartInfo endPointRestartInfo = endPointsRestartInfo.get(i);
-            if (endPointRestartInfo == null) continue;
+//     private void saveEndPointsRestartInfo() {
+//         qobjs.saveObjToEncFile(endPointRestartInfoListFilePath, endPointsRestartInfo, bigEncryptor);
+//     }
 
-            QEndPoint endPoint = endPointFactory.getObject();
-            endPoint.restart(endPointRestartInfo);
-            registerEndPointByIdx(endPoint);
-        }
-    }
+//     @SuppressWarnings("unchecked")
+//     private void loadEndPointsRestartInfo() {
+//         endPointsRestartInfo = (ArrayList<QEndPointRestartInfo>) qobjs.loadObjFromEncFile(endPointRestartInfoListFilePath, bigEncryptor);
+//     }
+
+//     public QEndPoint getEndPointByIdx(int endPointIdx) {
+//         return endPointsByIdxMap.get(endPointIdx);
+//     }
+
+//     public void registerEndPointByIdx(QEndPoint endPoint) {
+//         endPointsByIdxMap.put(endPoint.getEndPointIdx(), endPoint);
+//     }
+
+//     public void clearEndPointsList() {
+//         endPointsByIdxMap.clear();
+//     }
+
+//     public QEndPoint getEndPoint(int endPointIdx) {
+//         QEndPoint endPoint = endPointsByIdxMap.get(endPointIdx);
+//         return endPoint;
+//     }
+
+
+//     private void openEndPoints() {
+
+//         for (int i = 0; i < endPointsRestartInfo.size(); i++) {
+//             QEndPointRestartInfo endPointRestartInfo = endPointsRestartInfo.get(i);
+//             if (endPointRestartInfo == null) continue;
+
+//             QEndPoint endPoint = endPointFactory.getObject();
+//             endPoint.restart(endPointRestartInfo);
+//             registerEndPointByIdx(endPoint);
+//         }
+//     }
 
 /////////// Persistence ///////////////////////////////////////////////////////////////////////////
 /////////// Persistence ///////////////////////////////////////////////////////////////////////////
