@@ -5,7 +5,6 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetSocketAddress;
 import java.net.SocketException;
-import java.nio.ByteBuffer;
 import java.security.NoSuchAlgorithmException;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -17,9 +16,9 @@ import javax.crypto.ShortBufferException;
 import java.util.Map;
 import com.qnenet.qne.network.channel.QClientChannel;
 import com.qnenet.qne.network.channel.QServerChannel;
-import com.qnenet.qne.objects.classes.QEPAddr;
 import com.qnenet.qne.objects.classes.QNEPacket;
-import com.qnenet.qne.objects.classes.QPayload;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Represents a node in the QNE network.
@@ -28,6 +27,9 @@ import com.qnenet.qne.objects.classes.QPayload;
  * and handles each packet in the queue.
  */
 public class QNode {
+    private static final Logger logger = LoggerFactory.getLogger(QNode.class);
+
+    // Rest of your code...
 
     private String ipAddress;
     public int port;
@@ -42,8 +44,8 @@ public class QNode {
     /**
      * Constructs a QNode object with the specified port number.
      * 
-     * @param port the port number to listen for incoming packets
-     * @param executor 
+     * @param port     the port number to listen for incoming packets
+     * @param executor
      */
     public QNode(String ipAddress, int port, byte[] nodeKeyPair, ExecutorService executor) {
         try {
@@ -52,48 +54,67 @@ public class QNode {
             this.port = port;
             this.nodeKeyPair = nodeKeyPair;
             socket = new DatagramSocket(port);
+            executor.submit(() -> {
+                try {
+                    startReceivePacketLoop();
+                } catch (IOException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                } catch (ShortBufferException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                } catch (BadPaddingException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+            });
         } catch (SocketException e) {
             e.printStackTrace();
         }
-    }
-
-    public InetSocketAddress getInetSocketAddress() {
-        return new InetSocketAddress(ipAddress, port);
     }
 
     /**
      * Starts a virtual thread that receives packets and puts them in a queue.
      * This method continuously listens for incoming packets on the specified port,
      * adds them to the packet queue, and handles each packet in the queue.
+     * @throws IOException 
+     * @throws BadPaddingException 
+     * @throws ShortBufferException 
      */
-    public void startReceivePacketLoop() {
-        Thread.startVirtualThread(() -> {
-            byte[] buffer = new byte[1024];
+    public void startReceivePacketLoop() throws IOException, ShortBufferException, BadPaddingException {
+        // byte[] buffer = new byte[65536];
+        // DatagramPacket packet = new DatagramPacket(buffer, buffer.length);
+
+        while (true) {
+
+            byte[] buffer = new byte[65536];
             DatagramPacket packet = new DatagramPacket(buffer, buffer.length);
 
-            while (true) {
-                try {
-                    socket.receive(packet);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                packetQueue.add(packet);
+            socket.receive(packet);
 
-                // Loop to take packet off queue and handle it
-                while (!packetQueue.isEmpty()) {
-                    DatagramPacket queuedPacket = packetQueue.poll();
-                    try {
-                        handlePacket(queuedPacket);
-                    } catch (ShortBufferException | BadPaddingException e) {
-                        // TODO Auto-generated catch block
-                        e.printStackTrace();
-                    }
-                }
-            }
-        });
+            handlePacket(packet);
+            // System.out.printf("Received packet from {}:{}", packet.getAddress(), packet.getPort());
+
+            // logger.info("Received packet from {}:{}", packet.getAddress(), packet.getPort());
+
+            // packetQueue.add(packet);
+
+            // // Loop to take packet off queue and handle it
+            // while (!packetQueue.isEmpty()) {
+            //     DatagramPacket queuedPacket = packetQueue.poll();
+            //     try {
+            //         handlePacket(queuedPacket);
+            //     } catch (ShortBufferException | BadPaddingException e) {
+            //         e.printStackTrace();
+            //     }
+            // }
+        }
     }
 
     private void handlePacket(DatagramPacket packet) throws ShortBufferException, BadPaddingException {
+
+        logger.info("Handling packet from {}:{}", packet.getAddress(), packet.getPort());
+        // System.out.println("\"Handling packet from {}:{}\", packet.getAddress(), packet.getPort()");
         QNEPacket qnePacket = new QNEPacket(packet);
         if (qnePacket.channelId > 0) { // server
             serverChannel = serverChannelsByIdMap.get(qnePacket.channelId);
@@ -101,7 +122,8 @@ public class QNode {
                 executor.submit(() -> {
                     try {
                         serverChannel = new QServerChannel(this, nodeKeyPair.clone()); // Instantiate QServerChannel
-                        serverChannelsByIdMap.put(qnePacket.channelId, serverChannel); // Cast packetData.channelId to Integer
+                        serverChannelsByIdMap.put(qnePacket.channelId, serverChannel); // Cast packetData.channelId to
+                                                                                       // Integer
                     } catch (NoSuchAlgorithmException | ShortBufferException e) {
                         e.printStackTrace();
                     }
@@ -118,12 +140,16 @@ public class QNode {
 
     public void sendPacket(QNEPacket qnePacket) {
         var bytes = qnePacket.pack();
-        DatagramPacket packet = new DatagramPacket(bytes, bytes.length, qnePacket.destInetSocketAddress);
+        DatagramPacket packet = new DatagramPacket(bytes, bytes.length, qnePacket.sendDestInetSocketAddress);
         try {
             socket.send(packet);
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public InetSocketAddress getInetSocketAddress() {
+        return new InetSocketAddress(ipAddress, port);
     }
 
     /**

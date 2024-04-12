@@ -1,16 +1,8 @@
 package com.qnenet.qne.store.provider;
 
 
-import com.qnenet.qne.objects.classes.QStoreInfo;
 import com.qnenet.qne.objects.classes.QStoreObject;
-import com.qnenet.qne.objects.impl.QNEObjects;
-import com.qnenet.qne.store.api.QStore;
-
 import com.qnenet.qne.system.utils.QFileUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Service;
-
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.lang.foreign.Arena;
@@ -26,35 +18,32 @@ import java.util.UUID;
 
 import static java.nio.file.StandardOpenOption.*;
 
-@Service
-@Scope("prototype")
-public class QStoreImpl implements QStore {
+// @Service
+// @Scope("prototype")
+public class QStoreImpl {
 
-    @Autowired
-    QNEObjects qobjs;
+    // @Autowired
+    // QNEObjects qobjs;
 
     private Path storePath;
-    private UUID uuid;
-    private long storeOwner;
     private long creationTimestamp;
     private String storeName;
     private Path filePath;
-    private RandomAccessFile raf;
     private MemorySegment segment;
-    private long position;
     private long addPtr;
-    private long writePtr;
     private long readPtr;
     private long addPtrLocation;
     private long readPtrLocation;
+
+    private UUID uuid;
+    private long storeOwner;
+    private RandomAccessFile raf;
+    private long position;
+    private long writePtr;
     private long writePtrLocation;
 
-//////////////////////////////////////////////////////////////////////////////////////////////////
-/////// Init //////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////////////////////
 
-    @Override
-    public void init(String storeName, long storeOwner, Path storePath) throws IOException {
+    protected QStoreImpl(String storeName, long storeOwner, Path storePath) throws IOException {
         this.storeName = storeName;
         this.storeOwner = storeOwner;
         this.storePath = storePath;
@@ -66,6 +55,22 @@ public class QStoreImpl implements QStore {
     }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
+/////// Init //////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////
+
+    // @Override
+    // public void init(String storeName, long storeOwner, Path storePath) throws IOException {
+    //     this.storeName = storeName;
+    //     this.storeOwner = storeOwner;
+    //     this.storePath = storePath;
+    //     if (QFileUtils.checkDirectory(storePath)) {
+    //         newSystem();
+    //     } else {
+    //         restart();
+    //     }
+    // }
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
 /////// New System ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -75,7 +80,7 @@ public class QStoreImpl implements QStore {
         this.creationTimestamp = System.currentTimeMillis();
         this.filePath = Paths.get(storePath.toString(), storeName);
 
-        QStoreInfo info = new QStoreInfo(filePath.toString());
+        // QStoreInfo info = new QStoreInfo(filePath.toString());
 
         open();
 
@@ -88,9 +93,9 @@ public class QStoreImpl implements QStore {
 //        raf.writeLong(uuid.getLeastSignificantBits());
     }
 
-    private void setPosition(long l) {
-        position = 0L;
-    }
+    // private void setPosition(long l) {
+    //     position = 0L;
+    // }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 /////// Restart //////////////////////////////////////////////////////////////////////////////////
@@ -133,109 +138,90 @@ public class QStoreImpl implements QStore {
 //        }
     }
 
-    @Override
     public boolean addObject(QStoreObject obj) {
         return false;
     }
 
-    @Override
     public QStoreObject getObject(Object objId) {
         return null;
     }
 
-    @Override
     public Long getTotalObjCount() {
         return null;
     }
 
-    @Override
     public ArrayList<Object> getAllObjsWithClassId(int classId) {
         return null;
     }
 
-    @Override
     public long addByte(byte byteVal) {
         segment.set(ValueLayout.JAVA_BYTE, addPtr, byteVal);
         return bumpAddPtr(Byte.SIZE);
     }
 
-    @Override
     public long addInt(int intVal) {
         segment.set(ValueLayout.JAVA_INT, addPtr, intVal);
         return bumpAddPtr(Integer.SIZE);
     }
 
-    @Override
     public long addLong(long longVal) {
         segment.set(ValueLayout.JAVA_LONG, addPtr, longVal);
         return bumpAddPtr(Long.SIZE);
     }
 
-    @Override
     public long addBytes(byte[] bytesVal) {
         MemorySegment slice = segment.asSlice(addPtr, bytesVal.length);
         slice.copyFrom(MemorySegment.ofArray(bytesVal));
         return bumpAddPtr(bytesVal.length);
     }
 
-    @Override
     public long addString(String stringVal) {
         segment.setString(addPtr, stringVal);
         return bumpAddPtr(stringVal.length());
     }
 
-    @Override
     public long setByte(long ptr, byte byteVal) {
         segment.set(ValueLayout.JAVA_BYTE, ptr, byteVal);
         return bumpAddPtr(Byte.SIZE);
     }
 
-    @Override
     public long setInt(long ptr, int intVal) {
         segment.set(ValueLayout.JAVA_INT, ptr, intVal);
         return bumpAddPtr(Integer.SIZE);
     }
 
-    @Override
     public long setLong(long ptr, long longVal) {
         segment.set(ValueLayout.JAVA_LONG, ptr, longVal);
         return bumpAddPtr(Long.SIZE);
     }
 
-    @Override
     public long setBytes(long ptr, byte[] bytesVal) {
         MemorySegment slice = segment.asSlice(ptr, bytesVal.length);
         slice.copyFrom(MemorySegment.ofArray(bytesVal));
         return bumpAddPtr(bytesVal.length);
     }
 
-    @Override
     public long setString(long ptr, String stringVal) {
         segment.setString(ptr, stringVal);
         return bumpAddPtr(stringVal.length());
     }
 
-    @Override
     public byte getByte(long ptr) {
         return segment.get(ValueLayout.JAVA_BYTE, ptr);
     }
 
-    @Override
     public int getInt(long ptr) {
         return segment.get(ValueLayout.JAVA_INT, ptr);
     }
 
-    @Override
     public long getLong(long ptr) {
         return segment.get(ValueLayout.JAVA_LONG, ptr);
     }
 
-    @Override
     public byte[] getBytes(long ptr, int size) {
         return null;
     }
 
-    @Override
     public String getString(long ptr) {
         String str = segment.getString(ptr);
         bumpReadPtr(str.length());

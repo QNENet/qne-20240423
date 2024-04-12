@@ -44,7 +44,7 @@ public class QClientChannel {
     public QClientChannel(QNode node, byte[] keyPairClone, QNEPacket firstQNEPacket) throws NoSuchAlgorithmException, ShortBufferException {
         this.node = node;
         this.firstQNEPacket = firstQNEPacket;
-        this.destInetSocketAddress = firstQNEPacket.destInetSocketAddress;
+        this.destInetSocketAddress = firstQNEPacket.sendDestInetSocketAddress;
         this.srcEPIdx = firstQNEPacket.srcEPIdx;
         this.destEPIdx = firstQNEPacket.destEPIdx;
         this.channelId = firstQNEPacket.channelId;

@@ -9,34 +9,38 @@ import com.qnenet.qne.system.utils.QRandomUtils;
 
 public class QNEPacket {
 
-	public InetSocketAddress destInetSocketAddress;
+	public InetSocketAddress sendDestInetSocketAddress;
+	public InetSocketAddress returnInetSocketAddress;
 	public short srcEPIdx;
 	public short destEPIdx;
 	public QPayload payload;
 	public int channelId;
 	public int packetId;
 
-	public QNEPacket(short srcEPIdx, InetSocketAddress destInetSocketAddress, short destEPIdx, QPayload payload, int channelId) {
+	public QNEPacket(short srcEPIdx, InetSocketAddress sendDestInetSocketAddress, short destEPIdx, QPayload payload,
+			int channelId) {
 		this.srcEPIdx = srcEPIdx;
-		this.destInetSocketAddress = destInetSocketAddress;
+		this.sendDestInetSocketAddress = sendDestInetSocketAddress;
 		this.destEPIdx = destEPIdx;
 		this.payload = payload;
 		this.channelId = channelId;
 		this.packetId = QRandomUtils.randomIntBetween(1, Integer.MAX_VALUE);
 	}
 
-
-	public QNEPacket(short srcEPIdx, String destIpAddress, int destPort, short destEPIdx, QPayload payload, int channelId) {
+	public QNEPacket(short srcEPIdx, String destIpAddress, int destPort, short destEPIdx, QPayload payload,
+			int channelId) {
 		this.srcEPIdx = srcEPIdx;
-		this.destInetSocketAddress = new InetSocketAddress(destIpAddress, destPort);
+		this.sendDestInetSocketAddress = new InetSocketAddress(destIpAddress, destPort);
 		this.destEPIdx = destEPIdx;
 		this.payload = payload;
 		this.channelId = channelId;
 		this.packetId = QRandomUtils.randomIntBetween(1, Integer.MAX_VALUE);
 	}
-	public QNEPacket(short srcEPIdx, String destIpAddress, int destPort, short destEPIdx, QPayload payload, int channelId, int packetId) {
+
+	public QNEPacket(short srcEPIdx, String destIpAddress, int destPort, short destEPIdx, QPayload payload,
+			int channelId, int packetId) {
 		this.srcEPIdx = srcEPIdx;
-		this.destInetSocketAddress = new InetSocketAddress(destIpAddress, destPort);
+		this.sendDestInetSocketAddress = new InetSocketAddress(destIpAddress, destPort);
 		this.destEPIdx = destEPIdx;
 		this.payload = payload;
 		this.channelId = channelId;
@@ -44,8 +48,8 @@ public class QNEPacket {
 	}
 
 	public QNEPacket(DatagramPacket packet) {
-		destInetSocketAddress = (InetSocketAddress) packet.getSocketAddress();
-		ByteBuffer bb = ByteBuffer.wrap(packet.getData());
+		sendDestInetSocketAddress = (InetSocketAddress) packet.getSocketAddress();
+		ByteBuffer bb = ByteBuffer.wrap(packet.getData(), 0, packet.getLength());
 		srcEPIdx = bb.getShort();
 		destEPIdx = bb.getShort();
 		channelId = bb.getInt();
@@ -55,8 +59,6 @@ public class QNEPacket {
 		payload.bytes = new byte[bb.remaining()];
 		bb.get(payload.bytes);
 	}
-
-
 
 	public byte[] pack() {
 		ByteBuffer bb = ByteBuffer.allocate(13 + payload.bytes.length);

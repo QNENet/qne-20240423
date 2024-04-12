@@ -1,5 +1,6 @@
 package com.qnenet.qne;
 
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -18,12 +19,24 @@ public class QNodeTest {
     private ExecutorService executor;
 
     @BeforeEach
-    public void setUp() {
+    public void setUp() throws InterruptedException {
         executor = Executors.newVirtualThreadPerTaskExecutor();
+        CountDownLatch latch = new CountDownLatch(2);
+
         byte[] nodeKeyPair1 = QSecurityUtils.createNoiseKeypair();
-        node1 = new QNode("localhost",8900, nodeKeyPair1, executor);
+        executor.execute(() -> {
+            node1 = new QNode("localhost", 8900, nodeKeyPair1, executor);
+            latch.countDown();
+        });
+
         byte[] nodeKeyPair2 = QSecurityUtils.createNoiseKeypair();
-        node2 = new QNode("localhost", 8901, nodeKeyPair2, executor);
+        executor.execute(() -> {
+            node2 = new QNode("localhost", 8901, nodeKeyPair2, executor);
+            latch.countDown();
+        });
+
+        latch.await(); // wait for both nodes to be instantiated
+        
     }
 
     @Test

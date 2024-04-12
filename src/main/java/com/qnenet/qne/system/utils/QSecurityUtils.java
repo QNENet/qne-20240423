@@ -257,21 +257,24 @@ public class QSecurityUtils { // implements QSecurityUtils {
 
     public static byte[] createNoiseKeypair() {
         DHState dh = null;
+        byte[] result = new byte[64];
         try {
             dh = Noise.createDH("25519");
         } catch (NoSuchAlgorithmException e) {
             throw new RuntimeException(e);
         }
         dh.generateKeyPair();
-        byte[] privateKeyBytes = new byte[32];
-        dh.getPrivateKey(privateKeyBytes, 0);
-        byte[] publicKeyBytes = new byte[32];
-        dh.getPublicKey(publicKeyBytes, 0);
-        byte[] result = new byte[64]; 
-        System.arraycopy(privateKeyBytes, 0, result, 0, 32);      
-        System.arraycopy(publicKeyBytes, 0, result, 32, 32);      
+        dh.getPrivateKey(result, 0);
+        dh.getPublicKey(result, 32);
         return result;
     }
+
+    // private static byte[] concatenateByteArrays(byte[] array1, byte[] array2) {
+    //     byte[] result = new byte[array1.length + array2.length];
+    //     System.arraycopy(array1, 0, result, 0, array1.length);
+    //     System.arraycopy(array2, 0, result, array1.length, array2.length);
+    //     return result;
+    // }
 
 
 //    public static AsymmetricKeyParameter getEd25519PrivateKeyFromBytes(byte[] bytes) throws IOException {
