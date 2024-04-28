@@ -19,7 +19,7 @@
 
 	<properties>
 		<java.version>22</java.version>
-		<vaadin.version>24.3.9</vaadin.version>
+		<vaadin.version>24.3.10</vaadin.version>
 	</properties>
 
 	<repositories>
@@ -221,6 +221,7 @@
 						-Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=5895</jvmArguments>
 					<wait>500</wait>
 					<maxAttempts>240</maxAttempts>
+					<executable>true</executable>
 				</configuration>
 			</plugin>
 
