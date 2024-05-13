@@ -17,7 +17,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.embedded.tomcat.TomcatProtocolHandlerCustomizer;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Import;
 
+import com.github.valb3r.letsencrypthelper.tomcat.TomcatWellKnownLetsEncryptChallengeEndpointConfig;
 import com.qnenet.qne.system.constants.QSysConstants;
 import com.qnenet.qne.system.utils.QNetworkUtils;
 import com.qnenet.qne.system.utils.QThreadUtils;
@@ -58,6 +60,7 @@ import com.vaadin.flow.theme.lumo.Lumo;
         offlinePath = "offline.html",
         offlineResources = {"images/offline.png"}
 )
+@Import(TomcatWellKnownLetsEncryptChallengeEndpointConfig.class)
 public class Application implements AppShellConfigurator {
 
     private static SpringApplication app;

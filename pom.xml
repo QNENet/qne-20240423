@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
 		<version>3.2.5</version>
-		<relativePath /> <!-- lookup parent from repository -->
+		<relativePath />
+		<!-- lookup parent from repository -->
 	</parent>
 
 	<groupId>com.qnenet</groupId>
@@ -38,7 +38,7 @@
 			<id>vaadin-prereleases</id>
 			<url>
                 https://maven.vaadin.com/vaadin-prereleases/
-            </url>
+			</url>
 		</repository>
 		<!-- Repository used by many Vaadin add-ons -->
 		<repository>
@@ -48,6 +48,12 @@
 				<enabled>false</enabled>
 			</snapshots>
 		</repository>
+
+		<repository>
+			<id>jitpack.io</id>
+			<url>https://jitpack.io</url>
+		</repository>
+
 	</repositories>
 
 	<pluginRepositories>
@@ -64,7 +70,7 @@
 			<id>vaadin-prereleases</id>
 			<url>
                 https://maven.vaadin.com/vaadin-prereleases/
-            </url>
+			</url>
 		</pluginRepository>
 	</pluginRepositories>
 
@@ -193,9 +199,12 @@
 			<groupId>org.vaadin.addons.tatu</groupId>
 			<artifactId>webcam-flow</artifactId>
 			<version>1.0.0</version>
-		 </dependency>
-		 
-
+		</dependency>
+		<dependency>
+			<groupId>com.github.valb3r.letsencrypt-helper</groupId>
+			<artifactId>letsencrypt-helper-tomcat</artifactId>
+			<version>0.4.0</version>
+		</dependency>
 	</dependencies>
 
 
@@ -217,8 +226,7 @@
 		 the default Spring Boot's 30sec timeout.  -->
 				<configuration>
 					<layout>ZIP</layout>
-					<jvmArguments>-Xdebug
-						-Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=5895</jvmArguments>
+					<jvmArguments>-Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=5895</jvmArguments>
 					<wait>500</wait>
 					<maxAttempts>240</maxAttempts>
 					<executable>true</executable>
@@ -226,31 +234,31 @@
 			</plugin>
 
 
-		<plugin>
-			<groupId>com.vaadin</groupId>
-			<artifactId>vaadin-maven-plugin</artifactId>
-			<version>${vaadin.version}</version>
-			<executions>
-				<execution>
-					<goals>
-						<goal>prepare-frontend</goal>
-					</goals>
-				</execution>
-			</executions>
-		</plugin>
+			<plugin>
+				<groupId>com.vaadin</groupId>
+				<artifactId>vaadin-maven-plugin</artifactId>
+				<version>${vaadin.version}</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>prepare-frontend</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
 
-		<plugin>
-			<groupId>org.apache.maven.plugins</groupId>
-			<artifactId>maven-compiler-plugin</artifactId>
-			<configuration>
-				<source>22</source>
-				<target>22</target>
-				<compilerArgs>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>22</source>
+					<target>22</target>
+					<compilerArgs>
 					--enable-preview
-				</compilerArgs>
-			</configuration>
-		</plugin>
-	</plugins>
+					</compilerArgs>
+				</configuration>
+			</plugin>
+		</plugins>
 
 
 	</build>
@@ -281,33 +289,33 @@
 		</profile>
 
 		<profile>
-            <id>it</id>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.springframework.boot</groupId>
-                        <artifactId>spring-boot-maven-plugin</artifactId>
-                        <executions>
-                            <execution>
-                                <id>start-spring-boot</id>
-                                <phase>pre-integration-test</phase>
-                                <goals>
-                                    <goal>start</goal>
-                                </goals>
-                            </execution>
-                            <execution>
-                                <id>stop-spring-boot</id>
-                                <phase>post-integration-test</phase>
-                                <goals>
-                                    <goal>stop</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
+			<id>it</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.springframework.boot</groupId>
+						<artifactId>spring-boot-maven-plugin</artifactId>
+						<executions>
+							<execution>
+								<id>start-spring-boot</id>
+								<phase>pre-integration-test</phase>
+								<goals>
+									<goal>start</goal>
+								</goals>
+							</execution>
+							<execution>
+								<id>stop-spring-boot</id>
+								<phase>post-integration-test</phase>
+								<goals>
+									<goal>stop</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
 
-                </plugins>
-            </build>
-        </profile>
+				</plugins>
+			</build>
+		</profile>
 
 	</profiles>
 
