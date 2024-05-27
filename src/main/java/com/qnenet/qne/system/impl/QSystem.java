@@ -9,7 +9,7 @@ import com.qnenet.qne.objects.classes.*;
 import com.qnenet.qne.objects.impl.QNEObjects;
 import com.qnenet.qne.segment.QSegmentServer;
 import com.qnenet.qne.system.constants.QSysConstants;
-import com.qnenet.qne.network.upnp.QPortManager;
+// import com.qnenet.qne.network.upnp.QPortManager;
 // import com.qnenet.qne.security.users.QUsersManager;
 import com.qnenet.qne.system.utils.*;
 import jakarta.annotation.PostConstruct;
@@ -78,8 +78,8 @@ public class QSystem {
     @Autowired
     QNEObjects qobjs;
 
-    @Autowired
-    QPortManager portManager;
+    // @Autowired
+    // QPortManager portManager;
 
     // @Autowired
     // QUsersManager usersManager;
@@ -163,7 +163,7 @@ public class QSystem {
     private void newSystem() {
         executor.submit(() -> {
 
-            portManager.init(this);
+            // portManager.init(this);
             newSystemStage2();
         });
     }
@@ -280,7 +280,7 @@ public class QSystem {
 
     public void restart() {
         executor.submit(() -> {
-            portManager.init(this);
+            // portManager.init(this);
             restartSystemStage2();
         });
     }

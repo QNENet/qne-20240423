@@ -52,17 +52,17 @@ import com.vaadin.flow.theme.lumo.Lumo;
         offlinePath = "offline.html",
         offlineResources = {"images/offline.png"}
 )
-@Import(TomcatWellKnownLetsEncryptChallengeEndpointConfig.class)
+// @Import(TomcatWellKnownLetsEncryptChallengeEndpointConfig.class)
 public class Application implements AppShellConfigurator {
 
     private static SpringApplication app;
     private static ConfigurableApplicationContext appCtx;
 
-    @SuppressWarnings("rawtypes")
-    @Bean
-    public TomcatProtocolHandlerCustomizer tomcatProtocolHandlerCustomizer() {
-        return handler -> handler.setExecutor(Executors.newVirtualThreadPerTaskExecutor());
-    }
+    // @SuppressWarnings("rawtypes")
+    // @Bean
+    // public TomcatProtocolHandlerCustomizer tomcatProtocolHandlerCustomizer() {
+    //     return handler -> handler.setExecutor(Executors.newVirtualThreadPerTaskExecutor());
+    // }
 
 
     public static void main(String[] args) throws IOException {
