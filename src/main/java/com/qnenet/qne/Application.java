@@ -46,24 +46,19 @@ import com.vaadin.flow.theme.lumo.Lumo;
  */
 @SpringBootApplication
 @Theme(value = "qneTheme", variant = Lumo.LIGHT)
-@PWA(
-        name = "Quick N Easy",
-        shortName = "QNE",
-        offlinePath = "offline.html",
-        offlineResources = {"images/offline.png"}
-)
+@PWA(name = "Quick N Easy", shortName = "QNE", offlinePath = "offline.html", offlineResources = {
+        "images/offline.png" })
 // @Import(TomcatWellKnownLetsEncryptChallengeEndpointConfig.class)
 public class Application implements AppShellConfigurator {
 
     private static SpringApplication app;
     private static ConfigurableApplicationContext appCtx;
 
-    // @SuppressWarnings("rawtypes")
-    // @Bean
-    // public TomcatProtocolHandlerCustomizer tomcatProtocolHandlerCustomizer() {
-    //     return handler -> handler.setExecutor(Executors.newVirtualThreadPerTaskExecutor());
-    // }
-
+    @SuppressWarnings("rawtypes")
+    @Bean
+    public TomcatProtocolHandlerCustomizer tomcatProtocolHandlerCustomizer() {
+        return handler -> handler.setExecutor(Executors.newVirtualThreadPerTaskExecutor());
+    }
 
     public static void main(String[] args) throws IOException {
         runApp();
@@ -74,29 +69,34 @@ public class Application implements AppShellConfigurator {
         QThreadUtils.showThreadName("Application");
         Security.addProvider(new BouncyCastleProvider());
         // Path installPath = Paths.get(System.getProperty("user.home"),
-        //         QSysConstants.APP_NAME, "install");
-        // Path systemPortFilePath = Paths.get(installPath.toString(), "systemPort.prop");
+        // QSysConstants.APP_NAME, "install");
+        // Path systemPortFilePath = Paths.get(installPath.toString(),
+        // "systemPort.prop");
 
         // String portInfoStr = null;
         // try {
-        //     if (Files.notExists(systemPortFilePath)) {
-        //         portInfoStr = String.valueOf(QNetworkUtils.getFreePort());
-        //         FileUtils.writeStringToFile(systemPortFilePath.toFile(), portInfoStr, Charset.defaultCharset());
-        //     } else {
-        //         portInfoStr = FileUtils.readFileToString(systemPortFilePath.toFile(), Charset.defaultCharset());
-        //     }
+        // if (Files.notExists(systemPortFilePath)) {
+        // portInfoStr = String.valueOf(QNetworkUtils.getFreePort());
+        // FileUtils.writeStringToFile(systemPortFilePath.toFile(), portInfoStr,
+        // Charset.defaultCharset());
+        // } else {
+        // portInfoStr = FileUtils.readFileToString(systemPortFilePath.toFile(),
+        // Charset.defaultCharset());
+        // }
         // } catch (IOException e) {
-        //     throw new RuntimeException(e);
+        // throw new RuntimeException(e);
         // }
         // String portStr = portInfoStr.split(",")[0].trim();
 
         app = new SpringApplication(Application.class);
- /*        app.setHeadless(false);
-        app.setDefaultProperties(Collections.singletonMap("server.port", portStr));
-  */   }
+        /*
+         * app.setHeadless(false);
+         * app.setDefaultProperties(Collections.singletonMap("server.port", portStr));
+         */ }
 
     static void shutdown() {
-        if (appCtx.isActive()) appCtx.close();
+        if (appCtx.isActive())
+            appCtx.close();
     }
 
     static void restart() {
@@ -110,6 +110,7 @@ public class Application implements AppShellConfigurator {
         thread.start();
     }
 
-///////////////////////////////////////////////////////////////////////////////////////////////////
-}  /////////// End Class //////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////////////////////
+  ///////////////////////////////////////////////////////////////////////////////////////////////////
+} /////////// End Class
+  /////////// //////////////////////////////////////////////////////////////////////////
+  ///////////////////////////////////////////////////////////////////////////////////////////////////
